@@ -1,10 +1,9 @@
 ---
 layout: post
 categories:
-  - My Dev Story: Algorithm
+  - My Dev Story
 tags:
   - My Dev Story
-  - My Dev Story: Algorithm
   - Binary Search
   - Data Structure
 ---

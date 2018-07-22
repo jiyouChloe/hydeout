@@ -5,9 +5,8 @@ sidebar_link: true
 ---
 
 <p class="message">
-  Hey there! This page is included as an example. Feel free to customize it
-  for your own use upon downloading. Carry on!
+  Who am I? My name is Jiyou. Please feel free to call me Chloe. 
+  What I do? I’ve been a junior web developer for 2 years.
+  What am I interested in? I am interested in programming and travel all around world.
+  Who is your role model? Anne Shirley of green gables.
 </p>
-
-To make pages show up in the sidebar, add `sidebar_link: true` to the front
-matter.

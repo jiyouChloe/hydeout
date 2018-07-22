@@ -7,7 +7,7 @@ sidebar_link: true
 <div class="message">
   <dl>
     <dt>Who am I?</dt>
-    <dd>My name is Jiyou. Please feel free to call me Chloe. <img src="/assets/image/ann.jpg" width="100px;" float="right;"/></dd>
+    <dd>My name is Jiyou. Please feel free to call me Chloe. <img src="/assets/images/ann.jpg" style="float:right; width:100px;"/></dd>
 
     <dt>What I do?</dt>
     <dd>I’ve been a junior web developer for 2 years.</dd>

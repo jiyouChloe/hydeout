@@ -20,24 +20,3 @@ Q. ((25 + 50) / 2 = 38) 보다 크니 작니? A. 정답이에요!
 n개의 원소를 가진 리스트에서 이진탐색을 하면 최대 O(log2n)번 만에 답을 찾을 수 있는 것이다.
 ### Code
 아래의 코드는 정수 오름차순으로 정렬되어있는 배열 arr에서 item에 담겨져 있는 숫자의 배열 번호를 알아내는 알고리즘이다.
-{% highlight java %}
-// low와 high는 값의 범위 이다.
-int[] arr = {-1,4,5,6,7,8,18,38,97,100,101,108};
-int item = 38;
-
-int low = 0;
-int high = arr.length - 1;
-
-while(low <= high) {
-	int mid = (low + high) / 2;
-	int guess = arr[mid];
-	if(guess == item) {
-		return mid;
-	} else if(guess > item) {
-		high = mid - 1;
-	} else {
-		low = mid + 1;
-	}
-}
-return -1;
-{% endhighlight %}

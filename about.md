@@ -4,18 +4,13 @@ title: About
 sidebar_link: true
 ---
 
-
-![placeholder](/assets/image/ann.jpg "ann.jpg")
-![placeholder](/assets/image/ann.jpg)
 <div class="message">
-![placeholder](/assets/image/ann.jpg "ann.jpg")
-<img src="/assets/image/ann.jpg"/>
   <dl>
     <dt>Who am I?</dt>
-    <dd>My name is Jiyou. Please feel free to call me Chloe. ![placeholder](/assets/image/ann.jpg "ann.jpg")</dd>
+    <dd>My name is Jiyou. Please feel free to call me Chloe. <img src="/assets/image/ann.jpg" width="100px;" float="right;"/></dd>
 
     <dt>What I do?</dt>
-    <dd>I’ve been a junior web developer for 2 years.<img src="/assets/image/ann.jpg"/></dd>
+    <dd>I’ve been a junior web developer for 2 years.</dd>
 
     <dt>What am I interested in?</dt>
     <dd>I am interested in programming and travel all around world.</dd>

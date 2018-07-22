@@ -3,9 +3,9 @@ markdown:         kramdown
 highlighter:      rouge
 
 # Setup
-title:            Hydeout
+title:            Honey Jam Life
 tagline:          'A Jekyll theme'
-description:      'The <a href="http://hyde.getpoole.com" target="_blank">Hyde</a> theme for <a href="http://jekyllrb.com" target="_blank">Jekyll</a>, refreshed.'
+description:      '꿀잼 life'
 url:              https://jiyouchloe.github.io
 baseurl:          '/'
                   # the optional subpath of your site, e.g. "/blog"
@@ -28,7 +28,7 @@ plugins:
   - jekyll-paginate
 
 # Custom vars
-version:            3.7.0
+
 sidebar_home_link:  true
 # sidebar_blog_link:  '/blog'   # By default, your home page is your blog
                                 # page. If you change your paginate_path,

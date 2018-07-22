@@ -6,7 +6,7 @@ sidebar_link: true
 
 
 
-<p class="message">
+<div class="message">
   <dl>
     <dt>Who am I?</dt>
     <dd>My name is Jiyou. Please feel free to call me Chloe.</dd>
@@ -20,5 +20,5 @@ sidebar_link: true
     <dt>Who is your role model?</dt>
     <dd>Anne Shirley of green gables.</dd>
   </dl>
-</p>
+</div>
 

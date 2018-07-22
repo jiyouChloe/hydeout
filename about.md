@@ -7,9 +7,10 @@ sidebar_link: true
 
 
 <div class="message">
+![placeholder](/assets/image/ann.jpg "ann.jpg")
   <dl>
     <dt>Who am I?</dt>
-    <dd>My name is Jiyou. Please feel free to call me Chloe.![placeholder](https://jiyouchloe.github.io/assets/image/ann.jpg "ann.jpg")</dd>
+    <dd>My name is Jiyou. Please feel free to call me Chloe. ![placeholder](/assets/image/ann.jpg "ann.jpg")</dd>
 
     <dt>What I do?</dt>
     <dd>I’ve been a junior web developer for 2 years.</dd>

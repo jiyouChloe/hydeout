@@ -1,6 +1,6 @@
 ---
 layout: category
-title: Computer Science
+title: Daily Note
 ---
-방통대 수업 노트.
+일상.
 Posts get listed below here.

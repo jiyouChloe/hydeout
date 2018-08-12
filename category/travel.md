@@ -1,6 +1,6 @@
 ---
 layout: category
-title: Computer Science
+title: Travel
 ---
-방통대 수업 노트.
+여행.
 Posts get listed below here.

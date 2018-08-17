@@ -6,7 +6,7 @@ tags:
   - Computer Science
   - C programming
 ---
-## 3장. 입출력함수와 연산자
+## 3장. 입출력함수와 연산자(1)
 
 3-1. 표준 입출력 함수
 
@@ -183,6 +183,10 @@ void main()
 > 표준 입력함수
  
 1) scanf() : 키보드를 통해 여러 종류의 자료를 입력 받음.
+	      
+	      공백을 인식해여 첫번째 단어만 받아들임. 
+	      
+	      일반 변수일 경우에만 변수 앞에 &를 붙임. BUT 배열 등 주소값을 가지고 있는 변수는 &를 붙이지 않는다.
 
 			scanf("입력양식", &변수1, &변수2, ...);
 			
@@ -218,24 +222,128 @@ void main()
 	*/
 
 }
-}
+
 
 {% endhighlight %}
 
 			
 2) getchar() : 키보드를 통해 1개의 문자를 입력 받음.
 
+   putchar('문자') : 한문자를 화면에 출력한다.
+
+{% highlight js %}
+
+#include <stdio.h> 
+	
+void main()
+{
+	//getchar(); : 한 문자를 키보드를 통해 입력받는다.
+	char a;
+	a = getchar();
+	printf("\n%c\n", a);
+	
+	//putchar('문자'); : 한문자를 화면에 출력한다.
+	char var = 'A';
+	putchar(var);
+	putchar(var + 1);
+	putchar('\n');
+	putchar('K');
+	putchar('K' + 2);
+	putchar('\007');
+	
+	//출력결과
+	/*
+	AB
+	KM(삐소리가남)계속하려면 아무 키나 누르십시오 . . .
+	*/
+}
+
+{% endhighlight %}
+
 3) gets() : 키보드를 통해 문자열을 입력 받음.
 
-## 4장. 선택제어문과 반복제어문
+{% highlight js %}
 
-## 5장. 함수와 기억클래스
+#include <stdio.h> 
+	
+void main()
+{
+	// gets() : 키보드를 통해 문자열을 입력 받음.
+	char s[50];
+	printf("문자열 입력?");
+	gets(s);
+	printf("gets()로 문자열 입력= %s\n", s);
+	printf("문자열 입력?");
+	scanf("%s", s); // 일반 변수일 경우에만 변수 앞에 &를 붙임. BUT 배열 등 주소값을 가지고 있는 변수는 &를 붙이지 않는다.
+	printf("scanf()로 문자열 입력= %s\n", s);
+		
+	//출력결과
+	/*
+	문자열 입력?Computer Science
+	gets()로 문자열 입력= Computer Science
+	문자열 입력?Computer Science
+	scanf()로 문자열 입력= Computer
+	*/
+}
 
-## 6장. 배열와 포인터
+{% endhighlight %}
 
-## 7장. 구조체와 공용체
+4) puts(변수) : 문자열을 화면에 출력한다.
 
-## 8장. 파일처리함수
+char s[50]="seoul";
 
-## 9장. 메모리 동적할당
+puts(s);
+
+{% highlight js %}
+
+#include <stdio.h> 
+	
+void main()
+{	// puts(변수) : 문자열을 화면에 출력한다.
+	char s1[] = "Computer";
+	char s2[] = "Science";
+	puts(s1);
+	puts(s2);
+	printf("%s", s1);
+	printf("%s", s2);
+	//출력결과
+	/*
+	Computer
+	Science
+	ComputerScience
+	*/
+}
+
+{% endhighlight %}
+
+
+## 4장. 입출력함수와 연산자(2)
+
+1. 연산자(operator)
+ 
+ : 임의의 자료에 대해 각종 연산을 수행하도록 하는 기호. 
+
+1) 산술 연산자
+
+ : 피 연산자에 대해 사칙연산을 포함한 각종 산술연산을 수행하는 연산자
+ 
+ -이항 연산자 : +,-,*,/,%
+ 
+ -단항 연산자 : -(부호의 반전),--,++
+ 
+ 
+ 
+
+
+## 5장. 선택제어문과 반복제어문
+
+## 6장. 함수와 기억클래스
+
+## 7장. 배열와 포인터
+
+## 8장. 구조체와 공용체
+
+## 9장. 파일처리함수
+
+## 10장. 메모리 동적할당
 

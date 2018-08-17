@@ -6,7 +6,7 @@ tags:
   - Computer Science
   - C programming
 ---
-## 3장. 입출력함수와 연산자(1)
+## 3. 입출력함수와 연산자(1) (교재 3장)
 
 3-1. 표준 입출력 함수
 
@@ -317,7 +317,7 @@ void main()
 {% endhighlight %}
 
 
-## 4장. 입출력함수와 연산자(2)
+## 4. 입출력함수와 연산자(2) (교재 3장)
 
 1. 연산자(operator)
  
@@ -331,19 +331,240 @@ void main()
  
  -단항 연산자 : -(부호의 반전),--,++
  
+ {% highlight js %}
+
+#include <stdio.h> 
+	
+void main()
+{	
+	int x, y;
+	x = 10;
+	y = 3;
+	printf("x+y=%d\n", x + y);
+	printf("x/y=%d\n", x/y);
+	printf("x%%y=%d\n", x%y);
+	printf("y%%x=%d\n", y%x);
+	
+	// 출력결과
+	/*
+	x+y=13
+	x/y=3
+	x%y=1
+	y%x=3
+	*/
+}
+
+{% endhighlight %}
  
- 
+{% highlight js %}
+
+#include <stdio.h> 
+	
+void main()
+{	
+	int x = 5, a, b;
+	a = ++x*x--;
+	b = x * 10;
+
+	printf("a=%d b=%d x=%d", a, b, x);
+	//출력결과
+	/*
+	a=36 b=50 x=5
+	*/
+}
+
+{% endhighlight %}
+
+2) 관계 연산자
+
+{% highlight js %}
+
+#include <stdio.h> 
+	
+void main()
+{	
+	int a = 4, b, c, d;
+	b = a > 2;
+	printf("b=%d\n", b);
+	c = a < 2;
+	printf("c=%d\n", c);
+	d = a == 4;
+	printf("d=%d\n", d);
+	//출력결과 1: 참, 0:거짓
+	/*
+	b=1
+	c=0
+	d=1
+	*/
+}
+
+{% endhighlight %}
 
 
-## 5장. 선택제어문과 반복제어문
+3) 논리 연산자
 
-## 6장. 함수와 기억클래스
+{% highlight js %}
 
-## 7장. 배열와 포인터
+#include <stdio.h> 
+	
+void main()
+{	
+	int a = 4, b = 7, c, d, e;
+	c = a > 2 && b <= 7;
+	printf("c=%d\n", c);
+	d = a < 2 || b <= 7;
+	printf("d=%d\n", d);
+	e = !a; // C언어에서는 0은 거짓, 0이외의 값은 참.
+	printf("e=%d\n", e);
+	
+	// 출력결과
+	/*
+	c=1
+	d=1
+	e=0
+	*/
+}
 
-## 8장. 구조체와 공용체
+{% endhighlight %}
 
-## 9장. 파일처리함수
+4) 대입 연산자
 
-## 10장. 메모리 동적할당
+: 연산자의 오른쪽을 왼쪽에 대입하는데 사용
+
+{% highlight js %}
+
+#include <stdio.h> 
+	
+void main()
+{	
+	int a = 10, b = 3, c = 1;
+	a *= (b - 1);
+	b /= 2 + 3;
+	c += 2;
+	printf("a=%d b=%d c=%d", a, b, c);
+
+	//출력결과
+	// a=20 b=0 c=3
+}
+
+{% endhighlight %}
+
+
+5) 조건 연산자
+
+: 주어진 조건의 만족 여부에 따라 지정된 수식을 수행하는 연산자
+
+조건 ? 수식1 : 수식2;
+
+{% highlight js %}
+
+#include <stdio.h> 
+	
+void main()
+{	
+	int a = 10, b;
+	b = (a > 15) ? (a + 1) : (a - 1);
+	printf("b=%d", b);
+	// 출력결과
+	// b=9
+}
+
+{% endhighlight %}
+
+6) 비트 연산자
+
+
+7) 기타 연산자
+
+sizeof(자료) : 지정한 자료형, 수식, 변수가 차지하는 기억공간의 크기(byte)를 구함.
+
+	ex ) sizeof(int)
+		
+		
+cast(형변환) : 지정한 자료형을 다른 자료형으로 강제적으로 바꿈.
+
+	ex ) (float)i/j 
+
+& : 주소 연산자로서 피 연산자의 주소를 나타냄.
+
+* : 내용 연산자로서 피  연산자의 내용을 가져옴.
+
+
+{% highlight js %}
+
+#include <stdio.h> 
+	
+void main()
+{	
+	float a = 3.14;
+	int b;
+
+	printf("int형의 크기는=%d바이트\n", sizeof(a));
+	printf("float형 변수 a의 크기는=%d바이트\n", sizeof(a));
+	b = (int)a / 4;
+	printf("b=%d", b);
+	// 출력결과 (사용하는 컴퓨터의 성능에 따라서 값이 달라질 수 있음)
+	/*
+	int형의 크기는 = 4바이트
+	float형 변수 a의 크기는 = 4바이트
+	b = 0
+	*/
+}
+
+{% endhighlight %}
+
+8) 연산자 우선순위
+
+z = x + y * 2 - ++x + (y += 3)
+
+(y += 3) 소괄호연산 -> ++x 단항연산자 -> y*2 곱셈 -> 덧셈
+
+
+
+## 5강. 선택제어문과 반복제어문 (교재 4장)
+
+1) 프로그램 언어의 제어 구조
+
+- 순차적 제어
+
+  : 특별한 지정이 없는 한 위에서 아래로 수행된는 제어구조.	
+
+- 선택적 제어
+
+  : 주어진 조건에 따라 특정부분으로 수행을 옮기는 분기 제어구조.
+
+- 반복적 제어 
+
+ : 특정 부분을 일정한 횟수만큼 반복 수행하는 반복 제어구조.
+
+
+2) 선택 제어문
+
+- if 문
+
+- switch ~ case 문
+
+- goto 문
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 6강. 함수와 기억클래스
+
+## 7강. 배열와 포인터
+
+## 8강. 구조체와 공용체
+
+## 9강. 파일처리함수
+
+## 10강. 메모리 동적할당
 

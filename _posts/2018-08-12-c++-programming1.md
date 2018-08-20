@@ -163,10 +163,13 @@ Counter2:Counter => value = 5
 //첫번째 프로그램 a.cpp
 // 선행 처리기 지시어. 번역전에 a.h파일을 이 자리에 삽입하라.(내가 만든 파일은 ""로 묶고 C++안에 있는 라이브러리는<>로 묶음.
 #include <iostream>"a.h" 
-#define DEBUG_MODE
+#define DEBUG_MODE //디버그 모드가 정의되어 있는 상태
 
-using namespace std;  //명칭 공간 => 동일한 명칭이라도 서로 다른 명칭공간에서 정의되었다면 별개의 것으로 구분함.
-	
+using namespace std;  //명칭 공간 => 동일한 명칭이라도 서로 다른 명칭공간에서 정의되었다면 별개의 것으로 구분함. 중복되면 안되므로...
+		      // 여러 프로그래머가 작성한 프로그램을 결합하여 완성된 프로그램을 만들 경우 각자 필요한 명칭을 독립적으로 만들어 사용가능.
+		      // 전역 명칭공간: 특정 명칭공간에 속하지 않는 기본 명칭공간. 앞에 아무것도 안 쓰면 기본임.
+		      // std 명칭공간 : 표준 C++ 라이브러리의 명칭들이 정의되어 있는 명칭공간.
+		      // 'using namespac' 구문 : 특정 명칭공간을 기본 명칭공간에 포함시키기 위한 구문.
 int main()
 {
 	cout << "나의 첫번째 C++프로그램">>
@@ -174,7 +177,7 @@ int main()
 }
 
 int f(int x) {
-	#ifdef DEBUG_MODE
+	#ifdef DEBUG_MODE //디버그 모드가 정의되어 있느냐?
 	 	cout << x << endl;
 	#endif
 		return x*x;
@@ -182,4 +185,219 @@ int f(int x) {
 }
 
 {% endhighlight %}
+
+
+{% highlight js %}
+
+#include <iostream>
+//using namespace std; // 이걸 선언 안해주면 아래와 같이 std 안에 있는 함수 쓸때마다 std::라고 써줘야 함.
+
+namespace myNSp1 { int n = 10; }
+namespace myNSp2 { int n = 20; } 
+int n = 30;   			 // 전역
+
+int main()
+{
+	int n = 40;
+	std::cout << myNSp1::n << std::endl; //endl : 줄바꿈 (C에서 \n과 같은 역할), cout : 데이터를 문자열로 변환하여 출력, << : 출력 연산자
+	std::cout << myNSp2::n << std::endl;
+	std::cout << ::n << std::endl;
+	std::cout << n << std::endl;
+	return 0;
+	//출력결과
+	/*
+		10
+		20
+		30
+		40
+	*/
+}
+
+{% endhighlight %}
+
+
+* cin 객체
+
+표쥰 입력 스트림 객체.
+
+입력 연산자 : >>
+
+ex ) int a;
+
+     char str[100];
+     
+     cin >> a >> str;
+     
+     
+{% highlight js %}
+
+#include <iostream>
+//using namespace std; // 이걸 선언 안해주면 아래와 같이 std 안에 있는 함수 쓸때마다 std::라고 써줘야 함.
+
+namespace myNSp1 { int n = 10; }
+namespace myNSp2 { int n = 20; } 
+int n = 30;   			 // 전역
+
+int main()
+{
+	int n = 40;
+	std::cout << myNSp1::n << std::endl; //endl : 줄바꿈 (C에서 \n과 같은 역할), cout : 데이터를 문자열로 변환하여 출력, << : 출력 연산자
+	std::cout << myNSp2::n << std::endl;
+	std::cout << ::n << std::endl;
+	std::cout << n << std::endl;
+	return 0;
+	//출력결과
+	/*
+		10
+		20
+		30
+		40
+	*/
+}
+
+{% endhighlight %}
+
+* 기본 자료형
+
+1) 정수를 표현하는 자료형
+
+ 고정소수점 방식의 숫자 표현. ( 소수점 위치가 변하지 않음.)
+
+char(1byte), short(2byte), int, long(4byte) --> 컴퓨터의 성능에 따라 달라질 수 있음.
+
+signed 또는 unsigned
+
+overflow를 주의해야 함.
+
+bool : true 또는 false (1byte)
+
+
+2) 실수를 표현하는 자료형
+
+부동 소수점 방식의 숫자 표현.( 소수점 위치가 변할 수 있음.)
+
+float(4byte)
+
+부호 1비트, 지수부 8비트, 가수부 23비트로 구성.
+
+
+Q. 1200을 float형으로 나타내면? 
+
+1200.0f
+
+12e2f
+
+
+double(8byte)
+
+부호 1비트, 지수부 11비트, 가수부 52비트로 구성.
+
+Q. 1200을 double형으로 나타내면?
+
+1200.
+
+1200.0
+
+12e2
+
+1.2e+3
+
+
+* 변수와 상수
+
+변수 : 프로그램이 실행되는 동안 기억하고 있어야 하는 값들을 저장하는 메모리 영역.
+
+변수에는 이름이 지정되어야 함.
+
+모든 변수는 사용하기 전에 미리 선언해야 함.
+
+함수내부 : 지역변수
+
+함수외부 : 전역변수
+
+상수 선언 형식 : const int c = 10; // 초기화를 통해서만 값을 정할 수 있음. 정해진 값은 변경할 수 없음.
+
+
+CircleArea.cpp
+
+{% highlight js %}
+
+#include <iostream> //cin, cout을 사용하려고
+using namespace std; //cin,cout을 사용할 때마다 std를 선언해줘야 하는 번거러움을 덜려고
+
+int main()
+{
+	const double PI = 3.14159;
+
+	double radius;
+	
+	cout << "원의 반경을 입력하시오 : ";  // << : 출력연산자
+	cin >> radius; // >> : 입력연산자
+	double area = radius * radius * PI;
+	cout << "원의 면적 = " << area << endl;
+
+	return 0;
+}
+
+{% endhighlight %}
+
+
+* 자료형의 변환
+
+자동적 형 변환 ( 묵시적 형변환 ) : 우선순위가 낮은 자료형의 값이 순위가 높은 자료형의 값과 같은 형으로 자동적으로 변환됨.
+
+int a = 10;
+
+double b = 15.5; 
+
+a + b(double형이 우선순위가 더 높으므로 a가 double형으로 변환된 후 계산됨.)
+
+intVar = doubleVar + intVar * floatVar;
+
+1) intVar * floatVar  --> float형이 우선순위가 더 높으므로 intVar이 float형으로 변환된 후에 계산됨.
+
+2) doubleVar + 1) --> double형이 1번에서 나온 결과인 float형보다 우선순위가 높으므로 1번에서 나온 결과가 double로 형변환 된 후에 계산됨.
+
+3) intVar = 2) --> 2)의 double형값을 int 로 바꾸어 대입함. 소수점 아래는 다 버리기 때문에 오차 발생 가능.
+
+
+형변환 연산자
+
+1) dynamic_cast : 기초 클래스와 파생 클래스 간의 포인터 또는 참조 형 변환이 프로그램 실행 중에 일어나도록 지시함.
+
+2) static_cast : 실행 중에 형 검사를 하지 않으며, 컴파일 할 때 수식에 지정된 그대로 변환함.
+
+	 ex) static_cast<int> (n / 10.0)
+	     
+	     형변환 연산자 <변환하고자 하는 목표 자료형> (형변환 대상 수식)
+
+3) reinterpret_cast : 포인터를 다른 자료형의 포인터나 정수 자료형으로, 또는 그 역으로 변환함.(꼭 필요할 때만 주의해서 사용할 것)
+
+4) const_cast : const 지정을 일시 해제함.(값을 일시적으로 변경가능하도록 함)
+
+
+
+* 연산자
+
+논리 합 |, 논리 곱 &, 배타적 논리 함 ^, 부정 ~
+
+비트 이동 연산자 << : 좌측 이동, >> : 우측이동.
+
+x는 unsigned char 0X96 (1001 0110)
+
+y는 signed char 0X96 (1001 0110)
+
+우측이동의 경우 signed형 데이터에 대해서는 부호를 유지할 수 있도록 부호와 같은 비트가 채워짐.
+
+x << 2 : x를 2만큼 왼쪽으로 이동시켜라.
+
+y >> 2 : y를 2만큼 우측으로 이동시켜라.
+
+unsigned : 부호 없이 양수만 취급함.
+
+signed  : 부호구분함. 맨 앞의 비트는 부호를 의미함. 0일경우에 음수, 1일 경우에 양수.
+
+
+## 3강 C++ 언어의 기초(2)
+
 

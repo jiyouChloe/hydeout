@@ -3,9 +3,9 @@ markdown:         kramdown
 highlighter:      rouge
 
 # Setup
-title:            Honey Jam Life
+title:            꿀로이의 
 tagline:          'A Jekyll theme'
-description:      '꿀잼 life'
+description:      'Once you become fearless, life becomes limitless'
 url:              https://jiyouchloe.github.io
 baseurl:          '/'
                   # the optional subpath of your site, e.g. "/blog"

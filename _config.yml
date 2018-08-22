@@ -3,7 +3,7 @@ markdown:         kramdown
 highlighter:      rouge
 
 # Setup
-title:            꿀로이의 
+title:            꿀로이의 기록
 tagline:          'A Jekyll theme'
 description:      'Once you become fearless, life becomes limitless'
 url:              https://jiyouchloe.github.io

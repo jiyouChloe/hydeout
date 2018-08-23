@@ -1265,7 +1265,7 @@ void swap(int *x, int *y) {
 
 
 
-## 8강. 배열와 포인터(1)
+## 8강. 배열와 포인터(1) (교재 6장)
 
 1. 배열의 개념
 
@@ -1338,6 +1338,8 @@ void swap(int *x, int *y) {
 	
 - 외부로부터 자료를 입력 받아 초기화
 
+{% highlight js %}
+
 	int x[10];
 	
 	for(i=0; o<10; i++){
@@ -1346,13 +1348,148 @@ void swap(int *x, int *y) {
 	
 	}
 	
-***20분 할차례
-
-> 2차원 배열 : a[][]
-
-> 3차원 배열 : a[][][]
+{% endhighlight %}
 
 
+{% highlight js %}
+
+#include <stdio.h> 
+
+void main()
+{
+	static int x[] = { 1,2,3,4 };
+	static int y[] = { 10,20,30,40 };
+
+	int i, z[4];
+
+	for (i = 0; i < 4; ++i)
+		z[i] = x[i] + y[3 - i];
+	printf("반대 위치의 배열요소 합\n");
+
+	for (i = 0; i < 4; ++i)
+		printf("%d + %d = %d\n", x[i], y[3 - i], z[i]);
+
+	//출력결과
+	/*
+	반대 위치의 배열요소 합
+	1 + 40 = 41
+	2 + 30 = 32
+	3 + 20 = 23
+	4 + 10 = 14
+	*/
+}
+
+{% endhighlight %}
+
+
+> 2차원 배열 : 자료형 배열명[행의 수][열의 수]  => int a[3][4] => 2차원 배열로서, 배열명은 a이고 3행 4열로 된 12개의 요소를 가진 정수형 배열.
+
+- 2차원 배열의 선언과 초기화
+
+int array[3][3] = {1,2,3,4,5,6,7,8,9}; //가능하지만 아래의 표현이 가독성이 더 높은 방법.
+
+int array[3][3] = {{1,2,3},{4,5,6},{7,8,9}};
+
+
+{% highlight js %}
+
+void main()
+{
+	static int score[4][3] = { {90,90,90},{80,80,80},{70,70,70},{60,60,60} };
+
+	int sum, i, j;
+	printf("번호 국어 수학 영어 합계\n");
+	for (i = 0; i < 4; ++i) {
+		sum = 0;
+		printf("%-7d", i+1);
+		for (j = 0; j < 3; j++) {
+			printf("%-7d", score[i][j]);
+			sum += score[i][j];
+		}
+		printf("%-7\n", sum);
+	}
+	//출력결과
+	/*
+	번호 국어 수학 영어 합계
+	1      90     90     90
+	2      80     80     80
+	3      70     70     70
+	4      60     60     60
+	*/
+}
+
+{% endhighlight %}
+
+
+> 3차원 배열 : 자료형 배열명[면의 수][행의 수][열의 수] => int a[2][3][4] 
+		
+	       => 3차원 배열로서, 배열명은 a이고 2면 3행 4열로 된 24개의 요소를 가진 정수형 배열.
+
+int a[2][3][4] = {{{1,2,3,4},{5,6,7,8},{9,10,11,12}},{{13,14,15,16},{17,18,19,20},{21,22,23,24}}};
+
+
+> char형 배열 : char 배열명[문자열 길이 + 1] => char str[12] => 배열명이 str이고, 12문자 길이를 가진 char형 배열
+
+배열의 크기가 문자열 길이 + 1 인 이유: 문자열이 기억공간에 보관될 때 null문자가 자동적으로 마지막에 추가 되기 때문에.
+
+- char형 배열선언과 초기화 
+
+char name[] = "HONG GIL DONG"; // ""라고 되어있으므로 문자열을 의미, null 문자, 공백 포함 14개의 기억공간을 선언. 문자열 단위로 초기화.
+
+char address[] = {'S','E','O','U','L','\0'};
+
+{% highlight js %}
+
+void main()
+{
+	char name[] = "HONG GIL DONG"; 
+
+	char address1[] = { 'S','E','O','U','L','\0' };
+
+	char address2[] = { 'S','E','O','U','L'}; // 마지막 요소를 null 값 안 넣어주면 뒤에 쓰레기 값이 붙을 수 있음.
+
+	printf("\n name : %s", name);
+	printf("\n address1 : %s", address1);
+	printf("\n address2 : %s", address2);
+
+	//출력결과
+	/*
+	 name : HONG GIL DONG
+	 address1 : SEOUL
+	 address2 : SEOUL儆儆儆儆儆?EOUL
+	*/
+}
+
+{% endhighlight %}
+
+- char형 배열의 사용 예2
+
+{% highlight js %}
+
+void main()
+{
+	char string[50];
+	int i = 0;
+	printf("문자열을 입력하세요: ");
+	scanf("%s", string); //string 앞에 &를 안 쓰는 이유: 배열형은 이미 주소값을 가리키고 있기 때문에.
+	printf("입력 받은 문자열 : %s\n", string);
+	printf("문자 단위 출력: ");
+	while (string[i] != '\0') {
+		printf("%c", string[i]);
+		i++;
+	}
+
+	// 출력 결과
+	/*
+	문자열을 입력하세요: Hello
+	입력 받은 문자열 : Hello
+	문자 단위 출력: Hello
+	*/
+}
+
+{% endhighlight %}
+
+## 9강. 배열와 포인터(2) (교재 6장)
 3. 배열 요소의 참조 방법
 
 4. 배열의 기억공간 표현

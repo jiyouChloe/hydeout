@@ -1859,7 +1859,83 @@ void main()
 
 {% endhighlight %}
 
-## 8강. 구조체와 공용체
+## 11강. 구조체와 공용체(1)
+
+
+1. 구조체의 개념
+
+
+1) 구조체(structure)란? 
+
+서로 다른 자료형을 갖는 자료들의 모임을 하나의 자료형으로 정의하여 사용하는 자료형.
+
+
+2) 구조체 : 사용자 정의 자료형.
+
+	다양한 형식의 자료를 간결한 형식으로 표현 가능.
+
+	사용자가 새로운 형식을 정의하여 사용할 수 있다.
+
+
+3) 구조체의 필요성
+
+- 10대의 차량에 대한 자료처리의 경우
+
+{% highlight js %}
+
+// 일반 변수 사용
+
+	char maker[15];
+	long int km;
+	long int cost;
+	char maker[15];
+	long int km;
+	long int cost;
+	...
+	char maker[15];
+	long int km;
+	long int cost;
+
+//구조체 사용 (훨신 편해짐)
+	int sum(int a, int b);
+
+	void swap(int x, int y);
+
+	struct vehicle {
+		char maker[15];
+		long int km;
+		long int cost;
+	} car[10];
+
+
+{% endhighlight %}
+
+
+2. 구조체의 정의와 변수 선언
+
+1) 구조체의 정의
+
+{% highlight js %}
+
+struct 구조체명 {
+	멤버1;
+	멤버2;
+	...
+};
+
+{% endhighlight %}
+
+2) 구조체 변수의 선언
+
+형식 : struct 구조체명 변수명1, 변수명2, 변수명3;
+
+struct score x,y[10],*z;
+
+3. 구조체 변수의 초기화 및 참조
+
+4. 구조체 배열
+
+5. 구조체 포인터
 
 ## 9강. 파일처리함수
 

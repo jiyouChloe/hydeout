@@ -1386,9 +1386,13 @@ void main()
 
 - 2차원 배열의 선언과 초기화
 
+{% highlight js %}
+
 int array[3][3] = {1,2,3,4,5,6,7,8,9}; //가능하지만 아래의 표현이 가독성이 더 높은 방법.
 
 int array[3][3] = {{1,2,3},{4,5,6},{7,8,9}};
+
+{% endhighlight %}
 
 
 {% highlight js %}

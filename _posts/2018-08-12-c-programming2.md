@@ -1925,17 +1925,257 @@ struct 구조체명 {
 
 {% endhighlight %}
 
+
 2) 구조체 변수의 선언
 
 형식 : struct 구조체명 변수명1, 변수명2, 변수명3;
 
 struct score x,y[10],*z;
 
+
+3) 구조체 정의와 변수선언 예 1
+
+* 실제 자료형태 
+
+{% highlight js %}
+
+학번:2102
+
+이름:홍길동
+
+국어:70
+
+영어:85
+
+수학:80
+
+국사:90
+
+{% endhighlight %}
+
+* 구조체로 정의
+
+{% highlight js %}
+
+ struct score{
+ 	char no[4];
+	char name[8];
+	int kor;
+	int eng;
+	int math;
+	int hist;
+ };
+ 
+ struct score X,Y;
+
+{% endhighlight %}
+
+4) 구조체 정의와 변수선언 예 2
+
+{% highlight js %}
+
+ struct score{
+ 	char no[4];
+	char name[8];
+	int kor;
+	int eng;
+	int math;
+	int hist;
+ }X,Y;
+
+{% endhighlight %}
+
+5) 구조체 정의와 변수선언 예 3 (가장 많이 사용함)
+
+{% highlight js %}
+
+ typedef struct score{
+ 	char no[4];
+	char name[8];
+	int kor;
+	int eng;
+	int math;
+	int hist;
+ }jumsu;	//struct score를 jumsu라는 새로운 자료형으로 정의
+ 
+ jumsu X,Y;
+
+{% endhighlight %}
+
+
 3. 구조체 변수의 초기화 및 참조
+
+1) 구조체 변수의 초기화
+
+{% highlight js %}
+
+ struct person{
+	char name[8];
+	int age;
+	char sex;
+ };
+struct person X={"홍길동",20,'M'};
+
+{% endhighlight %}
+
+{% highlight js %}
+
+ struct person{
+	char name[8];
+	int age;
+	char sex;
+ }X={"홍길동",20,'M'};
+
+{% endhighlight %}
+
+
+2) 구조체 멤버의 참조
+
+*형식 : 구조체변수명.멤버명
+
+*사용예 : X.name, X.age, X.sex
+
+3) 구조체 멤버의 참조 예
+
+{% highlight js %}
+
+#include <stdio.h> 
+#include <string.h> 
+
+struct person {
+	char name[8]; //8byte
+	int age;      //2byte
+	char sex;     //1byte
+};
+
+void main()
+{
+	struct person X = { "홍길동",30,'M' };
+	struct person Y;
+	strcpy(Y.name, "임꺽정"); // 구조체 멤버에 값 대입(문자열을 처리할 경우 문자열 복사 함수 strcpy()를  사용
+	Y.age = 34;
+	Y.sex = 'M';
+	printf("X의 정보: %s, %d, %c\n", X.name, X.age, X.sex);
+	printf("Y의 정보: %s, %d, %c\n", Y.name, Y.age, Y.sex);
+
+	//출력결과
+	/*
+	X의 정보: 홍길동, 30, M
+	Y의 정보: 임꺽정, 34, M
+	*/
+}
+
+{% endhighlight %}
+
 
 4. 구조체 배열
 
+1) 구조체 배열이란?
+
+동일한 구조를 갖는 구조체 변수가 여러개 사용될 때
+
+그 구조체 변수들을 대표하는 배열명을 설정하여 일반 배열과 같이 사용.
+
+
+2) 구조체 배열의 예
+
+* 3명의 개인 신상정보를 저장하기 위한 구조체 배열 선언.
+
+{% highlight js %}
+	
+struct person {
+	char name[8]; 
+	int age;      
+	char sex;     
+}X[3];
+
+{% endhighlight %}
+
+{% highlight js %}
+	
+struct person {
+	char name[8]; 
+	int age;      
+	char sex;     
+};
+
+struct person X[3];
+
+{% endhighlight %}
+
+
+3) 구조체 배열의 초기화
+
+{% highlight js %}
+
+struct person X[3]={ {"홍길동",20,'M'}, {"황진이",22,'F'}, {"임꺽정",30,'M'} };
+
+{% endhighlight %}
+
+
+4) 구조체 배열의 멤버 참조
+
+{% highlight js %}
+
+strcpy(X[1].name, "홍길동"); //두번째 열의 name에 입력
+X[2].sex = 'M';		    //세번째 열의 sex에 입력
+K = X[2].age;		
+
+{% endhighlight %}
+
+5) 구조체 배열의 사용 예
+
+{% highlight js %}
+
+void main()
+{
+	struct person {
+		char *name;
+		int age;
+		char sex;
+	};
+
+	struct person X[3] = { {"홍길동",20,'M'}, {"황진이",22,'F'}, {"임꺽정",30,'M'} };
+
+	int i, sum = 0;
+	for (i = 0; i < 3; i++) {
+		printf("이름:%s 나이:%d 성별:%c\n", X[i].name, X[i].age, X[i].sex);
+		sum = sum + X[i].age;
+	}
+	printf("나이합:%d", sum);
+
+	//출력
+	/*
+	이름:홍길동 나이:20 성별:M
+	이름:황진이 나이:22 성별:F
+	이름:임꺽정 나이:30 성별:M
+	나이합:72
+	*/
+}
+
+{% endhighlight %}
+
+
 5. 구조체 포인터
+
+
+1) 포인터를 사용하여 구조체를 다룰 수 있게 함
+
+- 구조체를 보다 쉽게 다룰 수 있다.
+
+- 구조체변수 선언시 * 를 붙여 포인터로 선언
+
+- 구조체 포인터는 포인터와 동일하게 주소값을 갖게 되며, 자료가 있는 곳을 가르킨다.
+
+
+2) 구조체 포인터의 선언
+
+* 형식 : struct 구조체명 *포인터변수명;
+
+* 사용예 : struct person *pt;
+
+41:22할 차례
+
 
 ## 9강. 파일처리함수
 

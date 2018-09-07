@@ -2174,10 +2174,744 @@ void main()
 
 * 사용예 : struct person *pt;
 
-41:22할 차례
+{% highlight js %}
+
+struct person {
+	char name[8];
+	int age;
+	char sex;
+};
+
+struct person man; //구조체 변수 man 선언
+struct person *pt; //구조체 포인터변수 pt선언
+pt = &man;	   // 구조체 포인터변수의 초기화
 
 
-## 9강. 파일처리함수
+{% endhighlight %}
+
+3) 구조체 포인터의 멤버 참조
+
+* 도트 연산자(.)를 이용(도트 연산자의 처리 속도가 포인터 연산자의 처리속도 보다 빠르므로 항상 포인터 변수에 소괄호를 사용해야하는 불편함이 있음.)
+
+	(*pt).name
+	
+* 포인터 연산자(->)를 이용 (도트 연산자보다 포인터 연산자가 가독성에 더 좋음.)
+
+	pt->name
+	
+{% highlight js %}
+
+struct student {
+	char name[10];
+	int kor;
+	int math;
+};
+
+void main()
+{
+	struct student hs[4] = { {"Chloe",100,90},{"Judy",85,90},{"Miho",70,85},{"Samir",95,75} };
+	struct student *p;
+	p = hs;
+
+	printf("%s %d %d \n", p->name, p->kor, p->math);
+	p += 3;
+	printf("%s %d %d \n", p->name, p->kor, p->math);
+	p--;
+	printf("%s %d %d \n", p->name, p->kor, p->math);
+	
+	//실행 결과 
+	/*
+	Chloe 100 90
+	Samir 95 75
+	Miho 70 85
+
+	*/
+}
+
+
+{% endhighlight %}	
+
+## 12강. 구조체와 공용체(2)
+
+
+1. 함수와 구조체
+
+1) 함수에서의 구조체 사용
+
+* 구조체를 함수의 매개변수로 사용
+
+> 일반변수를 함수의 매개변수로 사용하는 것과 동일
+
+> 매개변수가 구조체인 경우 함수의 형식매개변수를 구조체로 선언
+
+> 해당 구조체 전체가 복사되기 때문에 편리
+
+> 구조체 전체가 복사되기 때문에 시간이 많이 걸리고 기억공간의 낭비가 심하다.
+
+
+* 구조체를 함수의 매개변수로 사용 예
+
+{% highlight js %}
+
+struct num calc(struct num);
+
+struct num {
+	int x;
+	int y;
+	int sum;
+	int mul;
+};
+
+// 넘겨받은 struct num 형 구조체의 멤버끼리 계산
+struct num calc(struct num number2) {
+	number2.sum = number2.x + number2.y;
+	number2.mul = number2.x*number2.y;
+	return(number2);
+};
+
+void main()
+{
+	struct num number1; //구조체 변수 선언
+	number1.x = 10;
+	number1.y = 20;
+	number1 = calc(number1); // 피호출 함수 calc()에 struct num형 구조체를 매개변수로 넘겨줌.
+
+	printf("x.%d, y.%d, sum:%d, mul:%d\n", number1.x, number1.y, number1.sum, number1.mul);
+
+	// 실행결과
+	// x.10, y.20, sum:30, mul:200
+}
+
+{% endhighlight %}	
+
+
+* 구조체 포인터를 함수의 매개변수로 사용(주로 이방법을 많이 사용함)
+
+> 일반적으로 구조체 포인터를 함수의 매개변수로 사용
+
+> 구조체를 복사하지 않기 때문에 실행속도가 향상되고, 기억공간의 사용효율도 좋다.
+
+
+* 구조체포인터를 함수의 매개변수로 사용 예
+
+{% highlight js %}
+
+struct num calc(struct num*);
+struct num calc(struct num *number2) {  //구조체 포인터를 매개변수로 넘겨 받음.
+	number2->sum = number2->x + number2->y;
+	number2->mul = number2->x * number2->y;
+};
+
+void main()
+{
+	struct num number1; //구조체 변수 선언
+	number1.x = 10;
+	number1.y = 20;
+	calc(&number1);  // 참조호출(& 사용)
+
+	printf("x.%d, y.%d, sum:%d, mul:%d\n", number1.x, number1.y, number1.sum, number1.mul);
+}
+
+// 실행결과
+// x.10, y.20, sum:30, mul:200
+
+{% endhighlight %}
+
+2. typedef
+
+1) 이미 존재하는 자료형에 새로운 이름을 붙이기 위한 키워드
+
+* 형식 : typedef 기존 자료형 새로운 자료형 이름;
+
+* 사용 예 : typedef int INT;
+
+2) typedef의 사용
+
+{% highlight js %}
+
+typedef unsigned int BYTE; //unsigned int 형을 BYTE라는 새로운 이름으로 정의
+
+BYTE val; // 컴파일러가 unsigned int val로 해석
+
+typedef int *PTR; // int*를 PTR로 재정의
+
+PTR p1,p2;
+
+{% endhighlight %}
+
+{% highlight js %}
+
+struct data {
+	int x;
+	int y;
+};
+typedef struct data DATA;
+
+/*
+//이방법을 더 많이 사용(간략하므로)
+typedef struct data {
+	int x;
+	int y;
+} DATA;
+*/
+void main()
+{
+
+	DATA d = { 1,2 };
+	printf("%d,%d\n", d.x, d.y);
+
+	//실행결과
+	//1,2
+}
+
+{% endhighlight %}
+
+* typedef의 사용 예2
+
+{% highlight js %}
+
+struct person {
+	char name[20];
+	int age;
+	char sex;
+};
+typedef struct person MAN;
+typedef unsigned char CHAR;
+typedef int* PTR;
+
+void main()
+{
+	MAN member;
+	CHAR data;
+	PTR pt;
+	strcpy(member.name, "홍길동");
+	member.sex = 'M';
+	member.age = 30;
+	data = 100;
+	pt = &(member.age);
+	printf("*pt=%d\n", *pt);
+	//출력결과
+	/*
+	*pt=30
+	*/
+}
+
+{% endhighlight %}
+
+
+3. 구조체 비트필드
+
+1) 구조체의 비트필드(bit field)
+
+> 주기억장치의 기억공간을 byte 단위가 아닌 bit단위로 사용.
+
+	- 프로그램 시 bit단위의 연산이 필요할 경우 int형 변수를 사용.
+
+	- 이때 int형은 2byte(16bit)이므로 1bit를 제외한 15bit의 기억공간이 낭비.
+
+> 구조체의 비트필드를 사용하면
+	
+	- 기억공간을 절약하고,
+	
+	- 더욱 융통성 있는 데이터 구조체를 만들 수 있다.
+
+
+2) 구조체 비트필드의 정의
+
+{% highlight js %}
+
+struct 비트필드명 {
+	자료형 비트필드변수 : 비트크기;
+		
+};
+
+struct nibble {
+	unsigned a : 1;
+	unsigned b : 2;
+	unsigned c : 1;
+};
+
+{% endhighlight %}
+
+> 구조체 비트필드의 선언 예와 기억공간 구조
+
+{% highlight js %}
+
+struct test {
+	unsigned a : 4; //16개의 값 들어갈 수 있음 0~15
+	unsigned b : 2; // 0~3
+	unsigned c : 1; // 0,1
+	unsigned d : 7; // 0~127
+	// 총 14byte임. 만약 int크기가 2byte라면 총 16 byte까지 선언가능.
+
+};
+
+struct test bit; // 구조체 비트필드의 변수의 선언
+
+// 구조체 비트필드의 참조예
+bit.a = 15;
+bit.b = 3;
+bit.c = 0;
+bit.d = 127;
+
+{% endhighlight %}
+
+* 주의 사항
+
+비트 필드의 자료형은 int 나 unsigned로 선언.
+
+비트필드에 대한 포인터나 배열은 사용 안됨.
+
+비트필드의 전체 크기는 시스템이 제공하는 int의 크기 이내여야 함.
+
+
+* 구조체 비트필드의 사용 예
+
+{% highlight js %}
+
+struct test {
+	unsigned a : 5;
+	unsigned b : 6;
+	unsigned c : 6;
+	unsigned d : 4;
+};
+
+void main()
+{
+	struct test v = {1,2,3,4}; // 구조체 비트필드의 변수의 선언과 초기화
+	printf("v.a=%d v.b=%d v.c=%d v.d=%d\n", v.a, v.b, v.c, v.d);
+	printf("v는 %d byte 를 사용한다.\n",sizeof(v));
+	//실행결과
+	/*
+	v.a=1 v.b=2 v.c=3 v.d=4
+	v는 4 byte 를 사용한다.
+	*/
+}
+
+{% endhighlight %}
+
+* 구조체 비트필드의 기억공간 구조
+
+{% highlight js %}
+
+struct test {
+	unsigned a : 5;
+	unsigned b : 6;
+	unsigned c : 6;
+	unsigned d : 4;
+}; 
+// int크기가 2byte인 컴퓨터에서 비트필드의 총 수가 int의 크기보다 클 경우 비트 필드가 2개의 int 사이에 걸쳐 저장될 수 없다.
+// 즉, a,b는 첫번째 int에 저장이되고 c,d는 두번째 int에 저장이 된다. 첫번째 int에서 5bit는 사용이 되지 않는다. 
+// 전체적으로 4byte가 사용됨.
+
+{% endhighlight %}
+
+
+4. 공용체의 개념
+
+
+1) 공용체(union)란?
+
+> 동일한 기억장소에 여러 유형의 자료를 저장하기 위해서 프로그래머가 선언한 자료형.
+
+> 공용체 안에 포함된 자료들이 같은 기억장소를 공유하여 사용.
+
+> 사용 될 자료의 자료형이 유동적일 경우 기억공간을 효율적으로 사용할 수 있는 장점.
+
+
+2) 공용체의 예 
+
+> 공용체의 멤버들이 완전히 다른 자료형을 가질 때 기억공간을 절약하기 위해 사용
+
+예) 급여관리 프로그램
+
+	- 원화로 월급을 지급받는 사람 : 정수형으로 처리
+
+	- 달러로 월급을 지급받는 사람 : 실수형으로 처리
+
+	=> 이러한 경우 공용체를 사용하면 필요에 따라 메모리의 자료형을 선택해서 값을 저장 가능.
+	
+
+3) 공용체의 정의
+
+> 형식  : 
+
+{% highlight js %}
+
+union 공용체명 {
+	멤버 1;
+	멤버 2;
+	...
+};
+
+{% endhighlight %}
+
+{% highlight js %}
+
+// 공용체 정의
+union var{  
+	char a;
+	int b;
+	float c;
+};
+
+union var abc; //공용체 변수 선언
+
+//공용체 변수의 참조
+abc.a = 'A';
+abc.b = 133; 
+abc.c = 1234.5678;
+
+{% endhighlight %}
+
+
+> 공용체 변수의 선언
+
+	형식 : union 공용체명 변수명;
+
+	사용예 : union var abc;
+
+
+5. 공용체의 사용
+
+1) 공용체가 사용되면
+
+	> 공용체의 멤버 중에서 자료크기(byte 수)가 가장 큰 멤버에 대해서만 기억공간이 할당 되고,
+	
+	> 기억공간의 시작위치부터 각 부분을 다른 멤버가 공용으로 사용.
+
+{% highlight js %}
+ 
+ union hold {
+	int digit;   //2byte
+	double big;  // 멤버들 중 가장 크기가 큰 자료형 8byte
+	char letter; // 1byte
+};
+// |         |    | | | | | | |
+   <-letter->
+   <-   digit   ->
+   <-         big           -> 
+   
+{% endhighlight %}
+
+
+## 13강. 파일처리함수(1) - 교재 8장
+
+
+1. 파일 입'출력의 개념
+
+1) 보조기억장치의 파일을 이용한 자료의 입'출력.
+
+	: 파일처리 함수를 이용.
+
+2) 키보드나 모니터를 통한 자료의 입'출력.
+	
+	: 표준 입출력 함수를 이용.
+
+3) 파일처리 함수
+
+	: 보조기억장치(디스크)에 들어있는 정보들의 모임을 파일이라 하고, 이러한 파일을 제어하는 함수.
+
+4) 파일이란?
+
+	> 보조기억장치에 저장된 데이터들의 모임.
+	
+	> 일련의 바이트(byte)들로 구성
+	
+	> C프로그램은 운영체제를 통해서 파일을 읽거나 쓰게 된다.
+	
+	> C언어에서는 컴퓨터와 연결된 장치들까지도 모두 파일의 범주에 넣어 처리.
+
+5) 파일의 구분
+
+	> 텍스트 파일(text file)
+		
+		: 화면에 출력되는 문자들로 구성된 파일.
+	
+	> 2진 파일(binary file)
+	
+		: 텍스트 파일을 포함한 모든 종류의 자료를 다루는 파일.
+		
+		: 컴파일 되어 있어 기계어에 가까우므로 내용을 이해하거나 인쇄가 불가능.
+
+6) 파일에 대한 자료의 입력과 출력
+
+	> 파일 입력
+	
+		: 디스크 상의 특정 위치(파일)에 수록되어 있는 자료를 읽어 들여 기억공간에 수록하는 절차.
+		
+	> 파일 출력
+	
+		: 기억공간에 있는 자료를 디스크 상의 특정 위치(파일)에 수록하는 절차.
+	
+7) 파일처리를 위해서는 파일포인터를 사용
+
+	> 파일포인터
+	
+		: 파일이 어디에 있는지를 가리키는 포인터.
+		
+		: 모든 파일 입출력 함수는 파일 포인터를 사용.
+	
+8) 파일을 입출력 할 때 버퍼(buffer)가 사용
+
+	> 버퍼(buffer)
+		
+		: 기억 공간과 디스크 사이에 존재하는 임시 기억 공간(기억공간과 임시기억공간의 속도차를 줄여줌.)
+		
+		: 파일 입출력 시 디스크에 저장된 자료를 기억 공간으로 읽어 들이거나, 기억 공간에서 처리된 자료를 디스크에 저장할 때 사용.
+		
+		: 데이터를 버퍼에 다 옮겨놓고 버퍼에 있는 데이터를 목적지로 옮겨줌.
+		
+		
+2. 파일포인터를 이용한 파일 입'출력
+
+1) 자료의 입'출력 개념
+	
+	> 프로그램과 입'출력 장치(콘솔,파일,소켓 등)와의 사이에 이루어지는 자료의 입력과 출력.
+	
+	> 자료의 입'출력을 위한 논리적인 통로가 필요 : 스트림
+
+2) 스트림(stream)
+
+	스트림(출력)
+		
+ 시스템  ------------>      콘솔,파일,소켓 
+
+프로그램 <------------	
+
+	스트림(입력)
+
+
+3) 자료의 입출력을 위해서는 스트림이 필요
+	
+	> 표준 입출력장치를 이용한 자료 입출력.
+	
+		- 표준 입출력 장치와의 스트림은 프로그램 실행 시 자동으로 생성되고, 프로그램 종료 시 자동으로 소멸.
+	
+	> 파일을 이용한 자료 입출력
+	
+		- 파일 입출력을 위한 스트림은 프로그램을 통해 생성과 소멸을 시켜주어야 한다.
+		
+4) 파일 입출력의 수행과정
+
+파일을 연다 (파일과 자료를 주고 받을 수 있는 스트림을 생성(fopen()함수 사용) )
+
+=> 입출력을 수행한다 
+
+=> 파일을 닫는다. (생성된 스트림을 소멸시키기 위한 과정(fclose()함수 사용) )
+
+* 스트림의 생성
+
+	- 파일과 프로그램과의 통로(논리적인 접속)를 구성.
+	
+	- 통로 역할을 파일포인터가 수행.
+	
+
+5) 파일 입출력 프로그램 구조
+
+{% highlight js %}
+ 	
+FILE *fp;			//파일포인터 선언 
+fp = fopen("파일명","모드");	    //파일 열기
+// <입출력 수행>		    //<읽기'쓰기>
+fclose(fp);			//파일 닫기
+   
+{% endhighlight %}
+
+6) 파일 입출력 프로그램의 구조 예
+
+{% highlight js %}
+ 	
+void main()
+{
+	char ch;
+	FILE *fp;
+	fp = fopen("sample.dat", "w");
+	for (ch = 'A'; ch <= 'Z'; ch++)
+		fputc(ch, fp);
+	fclose(fp);
+}
+
+// 생성된 sample.dat파일을 열어보면 ABCDEFGHIJKLMNOPQRSTUVWXYZ 내용이 들어있음.
+
+{% endhighlight %}
+
+
+7) 파일포인터의 선언
+
+	> 파일 입출력을 위해서는 맨 처음 파일포인터를 선언 해야 한다.
+	
+	> 이 파일포인터는 실제 파일과 프로그램을 연결해 주는 통로가 된다.
+	
+	* 형식 : FILE *변수명;
+	
+	* 사용 예 : FILE *fp;
+	
+	* 기능 : 파일형 포인터변수를 선언
+	
+
+8) 파일 포인터 변수와 버퍼의 관계
+
+FILE *fa, *fb; // 파일형 포인터변수 선언. FILE형: 구조체형, FILE형 포인터변수 : 파일에 대한 여러가지 정보를 가진 변수
+
+// 버퍼가 fa,fb 두개 생김. fopen()함수에 의해 실제 파일과 연결됨.
+
+9) 파일포인터 선언과 파일 열기
+
+* 파일 열기
+
+	: 프로그램과 디스크상의 파일 사이에 데이터가 입출력 할 수 있도록 통로를 만들어 주는 것.
+	
+	* 형식 : fopen("파일명", "사용모드"); 
+	
+	* 사용예 : fp=fopen("test.dat","r");
+	
+	* 기능 : 파일을 열어 사용할 수 있게 함.
+	
+* fopen() 함수
+
+	> 입출력이 정상이면 지정된 파일의 파일포인터에 시작주소 값을 리턴.
+	
+	> 파일이 개방되지 않을 때는 에러 값 (NULL값)을 리턴.
+	
+	> 사용(개방)모드 = 파일접근모드 + 데이터 입출력 모드
+	
+	> 파일 접근모드(
+		
+		r: t가 생략됨. 텍스트 모드 입력 개방,
+		
+		rb: 2진모드 입력 개방,
+		
+		w: t가 생략됨. 텍스트 모드 출력 개방, 이전 내용 삭제,
+		
+		wb: 2진모드 출력 개방, 이전 내용 삭제,
+		
+		a: t가 생략됨. 텍스트 모드 이전 내용 뒤에 추가,
+		
+		ab: 2진모드 이전 내용 뒤에 추가,
+		
+		r+,rb+: 읽기와 쓰기 겸용,
+		
+		w+,wb+: 읽기와 쓰기 겸용, 이전 내용 삭제,
+		
+		a+,ab+: 파일 읽기, 이전 내용 뒤에 추가
+		
+		)
+	
+	> 데이터 입출력 모드(t,b)
+	
+	> t : 텍스트 모드(text mode)
+	
+		- 프로그램에서 파일로 자료를 입출력 할 때 변환이 일어나는 입출력 모드
+		
+		- 문자 변환이 필요(\n <-> CR/LF)
+	
+	> b: 이진 모드(binary mode)
+	
+		- 변환이 일어나지 않는 입출력모드
+		
+		- 문자 변환이 불 필요.
+	
+10) 파일 열기 사용 예
+
+{% highlight js %}
+ 	
+void main()
+{
+	FILE *fp1, *fp2;
+	fp1 = fopen("a:\text.txt", "w");
+	fp2 = fopen("c:\source\text.c", "r");
+}
+	// 파일 open이 안될 경우를 고려해서 강제로 종료시켜야 함.
+	if ((fp = fopen("파일명", "사용모드")) == NULL) {
+		puts("파일을 열수 없음");
+		exit(1); //프로그램을 종료할 때 사용하는 함수
+	}
+
+{% endhighlight %}
+
+11) 파일닫기
+
+	* 형식 : fclose(파일포인터 변수);
+	
+	* 사용예 : fclose(fp);
+	
+	* 기능 : 열었던 파일을 닫고, fp를 해제
+		
+		 개방된 통로와 버퍼를 원 상태로 환원.
+		 
+		 쓰기의 경우 파일 끝에 EOF(End Of File)신호를 부가 (완전한 파일로 완성됨)
+		 
+
+12) 파일 열기와 닫기 예
+
+{% highlight js %}
+ 	
+void main()
+{
+	FILE *fp1, *fp2;
+	
+	fp1 = fopen("a:\text.txt", "w");
+	fp2 = fopen("c:\source\text.c", "r");
+	...
+	fclose(fp1);
+	fclose(fp2);
+}
+
+{% endhighlight %}
+	
+	
+3. 순차파일처리
+
+1) 파일은 레코드 단위로 구성
+
+	> 레코드(record)
+	
+	: 파일 입출력처리에 사용되는 논리적인 기본단위
+	
+	: 각 레코드들은 필드(field)들로 구성
+
+	> 파일 처리함수를 이용하여 파일을 편성하는 방법에 따라
+	
+	  순차파일(레코드의 길이가 일정하지 않음)과 랜덤파일(레코드의 길이가 일정함)로 나뉘어짐.
+
+2) 파일의 종류
+
+	> 순차파일(sequential file)
+	
+		: 파일의 처음부터 자료를 차례로 읽고, 기록하는 파일
+		
+		: 레코드의 길이가 일정하지 않은 파일
+		
+	> 랜덤파일(random file)
+	
+		: 파일의 임의의 위치에서 자료를 읽고 기록하는 파일
+		
+		: 레코드의 길이가 일정한 파일.
+		
+3) 순차파일에서의 레코드 구성
+
+	> 순차파일은 레코드의 길이가 일정하지 않기 때문에 레코드들의 구분이 필요 : CR/LF를 사용하여 구분.
+	
+	|레코드1|CR/LF|레코드2|CR/LF|레코드3|
+	
+	> 텍스트 모드일 경우 자동으로 CR\LF를 \n으로 변환
+
+4) 순차파일 출력함수
+
+	> 만들어진 파일에 자료를 기록하는 함수
+	
+		출력함수                 입력함수
+		
+		putc()			getc()
+		
+		fputc()			fgetc()
+		
+		fputs()			fgets()
+		
+		fprintf()		fscanf()
+		
+
 
 ## 10강. 메모리 동적할당
 

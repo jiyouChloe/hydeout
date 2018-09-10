@@ -2913,5 +2913,436 @@ void main()
 		
 
 
-## 10강. 메모리 동적할당
+## 14강. 파일처리함수(2)
 
+1. 순차파일 입출력함수
+
+1)순차파일 출력함수
+
+: 만들어진 파일에 자료를 기록하는 함수
+
+putc() fputc() fputs() fprintf() (입력함수: getc(), fgetc(), fgets(), fscanf())
+
+2) 순차파일 만들기
+
+> putc()함수
+
+: 문자 단위의 파일 출력함수
+
+: fputc() 함수와 유사
+
+* 형식 : putc(문자변수, 파일포인터변수);
+
+* 사용 예 : putc(c,fp);
+
+* 기능 : fp가 가리키는 파일에 변수 c에 있는 문자를 출력.
+
+> putc() 함수의 사용 예
+
+{% highlight js %}
+ 	
+void main()
+{
+	FILE *fp;
+	char c;
+	fp = fopen("sample1.txt", "w");
+
+	if (fp == NULL) {
+		puts("파일을 열수 없음");
+		exit(1); //프로그램을 종료할 때 사용하는 함수
+	}
+
+	while ((c = getchar()) != EOF) // 문자 출력의 끝을 판별(ctrl+z)
+		putc(c, fp);			   // 문자를 파일로 출력
+	fclose(fp);					   // 파일닫기
+}
+
+{% endhighlight %}
+
+> fputs() 함수
+
+: 문자열을 파일로 출력할 때 사용
+
+* 형식 : fputs(문자열변수, 파일포인터 변수);
+
+* 사용 예 : fputs(s,fp);
+
+* 기능 : 지정된 파일에 문자열(하나의 레코드)을 출력.
+
+> fputs() 함수의 사용 예
+
+{% highlight js %}
+ 	
+void main()
+{
+	char name[64];
+	FILE *fp;
+
+	if ((fp = fopen("sample2.txt", "w") )== NULL) {
+		puts("파일을 열수 없음");
+		exit(1); //프로그램을 종료할 때 사용하는 함수
+	}
+	gets(name);
+	while (strcmp(name, "end")) {
+		strcat(name, "\n");
+		fputs(name, fp);
+		gets(name);
+	}
+	fclose(fp);
+}
+
+{% endhighlight %}
+
+> fprintf()함수
+
+: 지정된 형식을 가지고 파일에 자료를 출력
+
+: 여러 항목의 복합적인 자료로 구성된 레코드를 저장할 때 유용
+
+* 형식 : fprintf(파일포인터 변수, "출력형식", 변수);
+
+* 사용 예 : fprintf(fp, "%s %d\n",a,b);
+
+* 기능 : 지정된 형식대로 자료를 파일포인터 변수가 가리키는 곳에 출력.
+
+> fprintf() 함수의 사용 예
+
+{% highlight js %}
+ 	
+void main()
+{
+	FILE *fp;
+	char no[10], name[10];
+	int mid, term, rep, att, i;
+	fp = fopen("sample3.txt", "w");
+	if (fp  == NULL) {
+		puts("파일을 열수 없음");
+		exit(1); //프로그램을 종료할 때 사용하는 함수
+	}
+	fprintf(stdout, "학번 이름 중간 기말 레포트 출석 점수를 입력\n");
+	for (i = 0; i < 5; ++i) {
+		scanf("%s %s %d %d %d %d", no, name, &mid, &term, &rep, &att);
+
+		fprintf(fp, "%10s %8s %3d %3d %3d %3d\n", no, name, mid, term, rep, att);
+
+	}
+	fclose(fp);
+	//입력
+	/*
+	학번 이름 중간 기말 레포트 출석 점수를 입력
+	97001 KIM 29 28 30 10
+	97002 park 25 15 16 30
+	97003 LEE 30 12 29 39
+	97004 hong 10 11 22 10
+	97005 YONG 30 20 10 22
+	*/
+	// 출력 결과
+	/*
+     97001      KIM  29  28  30  10
+     97002     park  25  15  16  30
+     97003      LEE  30  12  29  39
+     97004     hong  10  11  22  10
+     97005     YONG  30  20  10  22
+	*/	
+}
+
+{% endhighlight %}
+
+
+2) C언어에서는 입,출력 장치를 파일 개념으로 처리
+
+> C프로그램에서는 자동적으로 3개의 표준파일에 대한 포인터를 생성.
+
+> 이러한 표준파일에 대해서는 따로 파일포인터를 선언할 필요가 없다.
+
+<table>
+  <thead>
+    <tr>
+      <th>표준파일</th>
+      <th>파일 포인터</th>
+      <th>대응 장치</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>표준입력</td>
+      <td>stdin</td>
+      <td>키보드</td>
+    </tr>
+    <tr>
+      <td>표준출력</td>
+      <td>stdout</td>
+      <td>모니터</td>
+    </tr>
+    <tr>
+      <td>표준에러</td>
+      <td>stderr</td>
+      <td>모니터</td>
+    </tr>
+  </tbody>
+</table>
+
+3) 순차파일 입력함수
+
+: 파일 출력함수에 의해 만들어진 순차파일의 저장된 자료를 읽어 내는 함수.
+
+: 자료를 읽을 때는 파일의 끝에 있는 EOF 신호를 만날 때까지 읽을 수 있는 프로그램 작성.
+
+(getc(),fgetc(),fgets(), fscanf())
+
+> getc() 함수
+
+: 문자 단위의 파일 입력함수
+
+: fgetc() 함수와 유사
+
+* 형식 : getc(파일포인터변수);
+
+* 사용 예 : c = getc(fp);
+
+* 기능 : 지정된 파일로부터 한 문자를 읽어온다.
+
+> fgets() 함수
+
+: 파일에 저장된 문자열 자료를 읽을 때 사용.
+
+: 읽어 낼 문자열의 길이를 반드시 명시.
+
+* 형식 : fgets(문자열변수, 문자열 길이 + 1, 파일포인터 변수);
+
+* 사용 예 : fgets(s,40,fp);
+
+* 기능 : 지정된 파일로부터 해당 문자열 길이 만큼의 문자를 읽어와 문자열 변수에 저장한다.
+
+{% highlight js %}
+ 	
+void main()
+{
+	char name[20];
+	FILE *fp;
+
+	if ((fp = fopen("sample2.txt", "r")) == NULL) {
+		puts("파일을 열수 없음");
+		exit(1); //프로그램을 종료할 때 사용하는 함수
+	}
+	
+	while (fgets(name, 20, fp) != NULL) {
+		printf("%s", name);
+	};
+	fclose(fp);
+}
+
+{% endhighlight %}
+
+
+> fscanf()함수
+
+: 숫자, 문자 등 복합적인 자료로 구성된 레코드를 읽을 때 사용.
+
+: 일반적으로 파일의 끝을 판별하는 feof()함수와 같이 사용.
+
+* 형식 :  fscanf(파일포인터 변수, "입력형식", 변수);
+
+* 사용 예 : fscanf(fp, "%s %d", &a, &b);
+
+* 기능 : 파일 포인터가 가리키는 곳으로부터 지정된 형식대로 자료를 읽어 온다.
+
+
+> 레코드 추가를 위한 사용 모드
+
+a 	a+	ab 	ab+
+
+* 형식 : fp=fopen("파일명","a"); 
+
+* 사용예 : fp=fopen("sample.dat","a");
+
+* 기능 : 이미 만들어진 순차파일의 끝에 새로운 레코드 추가(append)/ 파일이 없으면 만든다.
+
+{% highlight js %}
+ 	
+void main()
+{
+	FILE *fp;
+	fp = fopen("sample3.txt", "a");
+	fputs("추가했다1\n", fp);
+	fputs("추가했다2\n", fp);
+	fputs("추가했다3\n", fp);
+	fputs("추가했다4\n", fp);
+	fclose(fp);
+}
+
+{% endhighlight %}
+
+2. 랜덤파일(레코드들이 일정한 크기를 가지고 있음) 처리
+
+1) 랜덤파일(random file)
+
+: 파일의 임의의 위치에서 자료를 읽거나 쓸 수 있다.
+
+: 레코드의 길이가 일정
+
+
+2) 순차파일에 비해
+
+단점 : 기억공간 낭비
+
+장점 : 레코드 검색이 빠르고 효과적
+
+
+3) 일반적으로 랜덤을 입출력할 때는 2진모드로 파일을 개방
+
+fopen("파일이름","wb");
+
+fopen("파일 이름", "rb");
+
+> 2진모드의 특징
+
+: 텍스트파일보다 적은 기억공간
+
+: 레코드의 길이를 프로그래머가 결정
+
+: 파일 포인터의 위치 변경 가능
+
+
+3. 랜덤파일 입출력함수
+
+1) 랜덤 파일 만들기
+
+> fwrite() 함수
+
+: 레코드의 길이를 지정
+
+: 자료저장 변수는 포인터 형
+
+* 형식 : fwrite(저장자료변수, 레코드길이, 레코드개수, 파일포인터);
+
+* 사용예 : fwrite(name,10,1,fp);
+
+{% highlight js %}
+ 	
+void main()
+{
+	FILE *fp;
+	char name[10];
+	if ((fp = fopen("sample.txt", "wb")) == NULL) {
+		puts("파일을 개방할 수 없습니다.");
+		exit(1);
+	}
+	gets(name);
+	while (strcmp(name, "END")) {
+		fwrite(name, 10, 1, fp);
+		gets(name);
+	}
+	fclose(fp);
+
+}
+
+{% endhighlight %}
+
+
+> fread() 함수
+
+: 읽기에 성공하면 읽은 레코드 수를 리턴
+
+* 형식 : fread(읽을 자료변수, 레코드 길이, 레코드 개수, 파일포인터);
+
+* 사용 예 : fread(name, 10, 1, fp);
+
+{% highlight js %}
+ 	
+void main()
+{
+	FILE *fp;
+	char name[10];
+	if ((fp = fopen("sample.txt", "rb")) == NULL) {
+		puts("파일을 개방할 수 없습니다.");
+		exit(1);
+	}
+	
+	while (1) {
+		if (fread(name, 10, 1, fp) != 1)
+			break;
+		
+		puts(name);
+	}
+	fclose(fp);
+}
+
+{% endhighlight %}
+
+
+4. 랜덤파일의 위치 제어
+
+1) fseek() 함수
+
+: 파일 포인터를 임의의 위치로 이동시키는 함수
+
+: 랜덤파일의 특정부분을 입출력 할 수 있다.
+
+* 형식 : fseek(파일포인터 변수, 이동할 상대위치, 기준위치를 지정하는 모드)
+
+* 사용 예 : fseek(fp,2*REC_size, SEEK_SET); // 파일의 시작위치에서 +2 위치 표현
+
+: 기준 위치로부터 앞, 뒤로 이동하는 상대위치 개념 사용.
+
+
+2) fseek() 함수의 기준위치 지정모드
+
+stdio.h에 정의 됨.
+
+<table>
+  <thead>
+    <tr>
+      <th>기준위치모드</th>
+      <th>동일기호</th>
+      <th>설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>SEEK_SET</td>
+      <td>파일의 시작위치</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>SEEK_CUR</td>
+      <td>현재 파일포인터의 위치</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>SEEK_END</td>
+      <td>파일의 끝 위치</td>
+    </tr>
+  </tbody>
+</table>
+
+{% highlight js %}
+ 	
+void main()
+{
+	char str[10];
+	FILE *fp = fopen("sample.txt", "wt");
+	fputs("1234567890", fp);
+	fclose(fp);
+
+	fp = fopen("sample.txt", "rt");
+	fseek(fp, 7, SEEK_SET);
+	fgets(str, 4, fp); // 4: 문자열3개 +1 출력
+	printf("7번째부터 3글자 출력 : %s \n",str);
+	fseek(fp, -2, SEEK_CUR); //현재커서가 0다음에 있으므로 8다음으로 이동됨
+	fgets(str, 3, fp);
+	printf("현재위치에서 앞에 2글자부터 2글자 출력 : %s \n",str);
+	fseek(fp, -9, SEEK_END); // 1다음으로 커서이동
+	fgets(str, 6, fp);
+	printf("맨뒤에서 9번째 앞부터 5글자 출력 : %s \n",str);
+	fclose(fp);
+	//출력결과 
+	/*
+	7번째부터 3글자 출력 : 890
+	현재위치에서 앞에 2글자부터 2글자 출력 : 90
+	맨뒤에서 9번째 앞부터 5글자 출력 : 23456
+	*/
+}
+
+{% endhighlight %}

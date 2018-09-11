@@ -3346,3 +3346,358 @@ void main()
 }
 
 {% endhighlight %}
+
+
+## 15강. 메모리 동적할당
+
+1. 메모리 동적 할당의 개념
+
+
+1) C언어에서의 기억공간
+
+> 프로그램의 실행을 위해 기억공간 필요
+
+> 기억공간은 운영체제에서 할당
+
+> 할당되는 기억공간의 영역
+
+: 데이터 영역, 힙영역, 스택영역
+
+
+2) 기억공간의 확보 방법
+
+: 메모리 정적 할당(Static Allocation)
+
+- 기억공간의 데이터 영역과 스택 영역 이용
+
+- 프로그램을 작성하는 단계에서 필요한 기억공간의 크기를 결정
+
+: 메모리 동적 할당(Dynamic Allocation)
+
+- 기억공간의 힙 영역 이용
+
+- 프로그램 실행중에 입력되는 자료에 맞게끔 기억공간의 크기를 결정.
+
+
+3) 기억공간의 할당 영역
+
+> 데이터 영역 : 전역변수와 static 변수가 저장되는 영역( 프로그램이 시작함과 동시에 할당되고, 프로그램이 종료되면 소멸하게 된다.)
+
+> 힙 영역 : 프로그래머의 필요에 의해 할당/소멸이 이루어지는 영역
+	
+	(실행이 되면서 그 크기가 늘어나고 줄어들어 자유 기억공간이라 불리며 메로리 동적 할당에 사용되는 영역)
+
+> 스택 영역 : 지역변수와 매개변수가 저장되는 영역 ( 함수 호출이 완료, 해당 지역을 벗어나게 되면 사라지게 된다.) 
+
+
+2. 메모리 정적 할당
+
+1) 변수선언이나 배열 선언과 같이 프로그램을 작성하는 단계에서 필요한 기억 공간의 크기를 결정.
+
+	> 변수 선언과 같이 할당 시켜줘야 할 기억공간의 한계크기를 명확히 알고 있을 경우 사용.
+	
+	> 메모리 정적 할당은 프로그램이 시작될 때 미리 기억공간의 크기를 고정하여 할당.
+	
+
+{% highlight js %}
+ 	
+void test1(int);
+void test2(int);
+int a = 100;	// 데이터 영역 (프로그램이 종료되면 사라짐)
+
+void test1(int c) {
+	int d;	// 매개변수 c, 지역변수 d : 스택영역
+	d = c + 10;
+	printf("%d", d);
+}
+void test2(int e) {
+	int f;	// 매개변수 e, 지역변수 f: 스택영역
+	f = e + 20;
+	printf("%d", f);
+}
+void main()
+{
+	int b = a;	// 스택영역(main함수가 실행이 종료될 때까지 존재)
+	test1(b);
+	test2(b);
+}
+
+{% endhighlight %}
+
+2) 메모리 정적 할당의 장, 단점
+
+* 장점 :  프로그램에서 사용하게 될 변수의 기억 공간의 크기를 명확히 알고 있다면, 
+	  
+	  메모리 정적 할당은 쉽게 기억공간을 사용할 수 있고 에러의 발생 확률을 줄일 수 있다.
+	 
+* 단점 : 사용하게 될 기억공간의 크기를 정확히 알지 못하거나, 사용되는 자료의 크기가 각각 차이가 심하다면, 
+
+	 기억공간의 낭비를 가져오게 되는 문제점.
+	 
+
+3) 메로리 정적 할당의 문제점 예
+
+{% highlight js %}
+ 	
+void main(void)
+{
+	int size;
+	char a[size]; // 배열 a의 크기를 변수로 선언하면 에러발생
+
+	printf("입력할 주소의 문자열 크기는?");	                        
+	scanf("%d", &size);
+	printf("주소입력");
+	scanf("%s", a);
+	printf("입력된 주소는 %s입니다.\n",a);
+
+	int size;
+	char *a;
+	printf("입력할 주소의 문자열 크기는?");	                        
+	scanf("%d", &size);
+	a = (char *)malloc(sizeof(char)*size); //메모리 동적 할당
+	printf("주소입력:");
+	scanf("%s", a);
+	printf("입력된 주소는 %s입니다.\n",a);
+	free(a);
+}
+
+{% endhighlight %}
+
+
+3. 메모리 동적 할당 함수
+
+
+1) 메모리 동적 할당의 장,단점
+
+- 힙 영역을 이용하여 프로그램 실행 중에 입력되는 자료의 크기에 맞게 기억 공간을 확보
+
+- 많은 자료를 처리하는 배열의 크기를 실행시간에 정의해야 하는 경우에 특히 유용
+
+- 프로그램 실행 시 기억 공간의 크기를 지정할 수 있고, 재조정이 가능.
+
+- 시간이 지체되는 단점이 있다.
+
+
+2) 메모리 동적 할당 순서
+
+기억공간을 동적으로 할당 받을 변수를 포인터를 이용하여 선언한다.
+
+-> malloc() 함수 등을 이용하여 기억공간을 동적으로 할당한다.
+
+-> 기억공간의 사용이 끝나면 free() 함수를 이용하여 기억공간을 해제한다.
+
+
+3) 메모리 동적 할당 함수
+
+> malloc()함수
+
+* 형식 : void*malloc(size_t number_of_bytes);
+
+* 기능 : number_of_bytes에서 주어지는 크기만큼 기억공간을 동적으로 할당한다.
+
+* 사용 예 : void*malloc(sizeof(int));
+
+- 인자로 할당 받고자 하는 기억공간의 크기를 byte단위로 전달
+
+- 힙영역에 그 크기만큼 기억공간을 할당하고, 할당한 기억 공간의 첫 번째 주소를 반환.
+
+- void* 로 명시하여 어떤 형으로든 형 변환이 가능
+
+- 초기화 안됨(기억공간의 초기화를 위해서는 memset()사용)
+
+
+> free()함수
+
+- 힙 영역에 할당된 공간은 프로그램이 종료될 때까지 유지
+
+- 할당된 기억 공간을 해제하지 않으면 기억 공간의 부족 현상이 발생
+
+-따라서 명시적인 반납이 필요
+
+* 형식 : void free(void *p);
+
+* 기능 : 동적으로 할당된 기억 공간을 해제할 때 사용
+
+{% highlight js %}
+ 	
+void main(void)
+{
+	int *a;	// 1.동적할당을 위한 포인터변수 선언
+	a = (int *)malloc(sizeof(int));	// 2. 기억공간 할당, (int*)는 왼쪽의 포인터변수 a와 자료형을 일치시키기 위한 강제 형변환
+	if (a == NULL) {
+		puts("기억 공간 할당 실패!");
+		exit(1);
+	}
+	*a = 20;
+	printf("힙에 저장된 변수 a : %d\n", *a);
+	free(a); // 3. 할당받은 기억공간 해제
+}
+
+{% endhighlight %}
+
+> 메모리 동적할당의 예2
+
+{% highlight js %}
+ 	
+void main()
+{
+	char input[80];	// 입력되는 문자열의 길이가 가변적일 경우 충분히 크게 확보한 임시 문자배열
+	char *str;	// 동적할당된 기억공간을 연결할 포인터
+	printf("문자열을 입력하세요 : ");
+	gets(input);
+	str = (char *)malloc(strlen(input) + 1);	//입력된 문자열 길이를 계산하여 그 크기에 맞게 동적할당
+	strcpy(str, input);	// 동적할당 된 기억공간에 문자열 복사
+	printf("%s\n", str);
+	free(str);	
+}
+
+{% endhighlight %}
+
+
+> calloc()함수
+
+- malloc() 함수와 동일하게 힙영역에 기억공간 할당
+
+- 다른 점은 사용하는 형태와 할당된 기억 공간을 0으로 초기화
+
+* 형식 : void*calloc(int n,int size);
+
+* 기능 : 주어진 size의 크기를 가지는 기억공간 n개를 할당 받는다.
+
+* 사용예 : void*calloc(n,sizeof(int));
+
+> calloc() 함수의 사용 예
+
+{% highlight js %}
+ 	
+void main()
+{
+	int i;
+	int *a;
+	a = (int *)calloc(5, sizeof(int)); // int형 크기의 기억공간을 5개 할당
+	for (i = 0; i < 5; i++) {
+		printf("%d\n", a[i]);
+	}
+	free(a);
+	//출력결과
+	/*
+	0
+	0
+	0
+	0
+	0
+	*/
+}
+
+{% endhighlight %}
+
+
+> realloc() 함수
+
+- 이미 할당 받은 기억 공간의 크기를 변경해야 할 필요가 있을 경우에 사용
+
+* 형식 : void*realloc(void*p,int size);
+
+* 기능 : 포인터 p가 가리키고 있는 기억공간의 크기를 지정된 size의 크기로 변경
+
+{% highlight js %}
+ 	
+void main()
+{
+	int *a;
+	a = (int *)calloc(5, sizeof(int));	// int 형 크기의 기억공간을 5개 할당
+	a = (int *)realloc(a, 10*sizeof(int));	// int 형 크기의 기억공간을 10개 재할당
+}
+
+{% endhighlight %}
+
+
+4. 기억공간 관리함수
+
+1) 기억공간 관리를 위한 함수
+
+> memcmp() 함수
+
+- 기억공간에 들어 있는 자료를 주어지는 크기만큼 비교하여 같은지 여부를 알 수 있게 해주는 함수
+
+* 형식 : int memcmp(void *s1, void *s2, size_t n);
+
+* 기능 : s1과 s2가 가리키는 기억 공간의 내용을 n byte만큼 비교
+
+
+> memcmp() 함수의 사용 예
+
+{% highlight js %}
+ 	
+void main()
+{
+	char *s1 = "aaa";
+	char *s2 = "bbb";
+	int stat;
+	stat = memcmp(s1, s2, 3); // s1과 s2의 내용을 3byte 만큼 비교, 그 결과 -1이 stat에 저장
+				  // s1과 s2의 내용을 n byte 만큼 비교하여 s1>s2 이면 양수 s1<s2 이면 음수, s1 = s2이면 0을 반환하게 된다.
+	printf("%d", stat);
+	// 출력결과
+	//-1
+}
+
+{% endhighlight %}
+
+
+> memcpy() 함수
+
+- 기억공간의 자료를 다른 기억공간 영역으로 복사하기 위한 함수
+
+* 형식 : void *memcpy(void *dest, const void *src, size_t n);
+
+* 기능 : src 에서 n byte 만큼 dest에 복사
+
+{% highlight js %}
+ 	
+void main()
+{
+	char src[] = "1230567890";
+	char dest[] = "abcdefghijklmnopqrstuvwxyz";
+	char *stat;
+	printf("memcpy() 실행 전 dest의 데이터 : %s\n", dest);
+	stat = (char *)memcpy(dest, src, strlen(src)); // src의 첫부분에서부터 문자열의 길이(strlen())만큼의 자료를 dest에 복사
+	if (stat)
+		printf("memcpy() 실행 후 dest의 데이터 : %s\n", dest);
+	else
+		printf("복사 실패\n");
+	// 실행결과
+	/*
+	memcpy() 실행 전 dest의 데이터 : abcdefghijklmnopqrstuvwxyz
+	memcpy() 실행 후 dest의 데이터 : 1230567890klmnopqrstuvwxyz
+	*/
+}
+
+{% endhighlight %}
+
+
+> memset() 함수
+
+- 기억공간의 자료를 지정한 문자로 채우는 함수
+
+- 할당된 기억 공간의 초기화나 내용 삭제를 위해 주로 사용
+
+* 형식 : void *memset(void *s, int c, size_t n);
+
+* 기능 : 포인터 s가 가리키는 곳을 c값으로 n byte 만큼 채운다. 
+
+{% highlight js %}
+ 	
+void main()
+{
+	char s[] = "1230567890";
+	printf("memset() 실행 전 s의 데이터 : %s\n", s);
+	memset(s, '*', strlen(s)); // 배열 s의 데이터를 '*'로 문자열의 길이만큼(strlen())을 채운다
+	printf("memset() 실행 후 s의 데이터: %s\n", s);
+	// 실행결과
+	/*
+	memset() 실행 전 s의 데이터 : 1230567890
+	memset() 실행 후 s의 데이터: **********
+	*/
+}
+
+{% endhighlight %}
